@@ -39,11 +39,11 @@ public class CreateCourierTest {
     @Test
     @DisplayName("Courier must be unique")
     public void courierMustBeUnique() {
+        courierClient.create(courier);
         ValidatableResponse response = courierClient.create(courier);
-        ValidatableResponse response1 = courierClient.create(courier);
 
-        int statusCode = response1.extract().statusCode();
-        String message = response1.extract().path("message");
+        int statusCode = response.extract().statusCode();
+        String message = response.extract().path("message");
 
         assertThat("Courier hasn't created", statusCode, equalTo(409));
         assertThat("Message if cannot create", message, equalTo("Этот логин уже используется"));

@@ -1,7 +1,9 @@
 package com.ya;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +18,8 @@ public class LoginCourierTest {
     CourierClient courierClient;
     Courier courier;
     int courierId;
-    String courierLogin = "LogCurier";
-    String courierPassword = "PasCurier";
+    final String courierLogin = RandomStringUtils.randomAlphabetic(10);
+    final String courierPassword = RandomStringUtils.randomAlphabetic(10);
 
     @Before
     public void setUp() {
@@ -34,7 +36,11 @@ public class LoginCourierTest {
     @Test
     @DisplayName("Courier can login with valid credentials")
     public void courierCanLoginWithValidCredentials() {
-        ValidatableResponse loginResponse = courierClient.login(new CourierCredentials(courier.getLogin(), courier.getPassword()));
+           CourierCredentials courierCredentials= CourierCredentials.builder()
+                   .login(courier.getLogin())
+                   .password(courier.getPassword())
+                   .build();
+        ValidatableResponse loginResponse = courierClient.login(courierCredentials);
         int statusCode = loginResponse.extract().statusCode();
         courierId = loginResponse.extract().path("id");
 
@@ -43,9 +49,13 @@ public class LoginCourierTest {
     }
 
     @Test
-    @DisplayName("Courier cannot login without password")
+    @DisplayName("Courier cannot login with empty password")
     public void courierCannotLoginWithoutPassword() {
-        ValidatableResponse loginResponse = courierClient.login(new CourierCredentials(courier.getLogin(), ""));
+       CourierCredentials courierCredentials= CourierCredentials.builder()
+               .login(courier.getLogin())
+               .password("")
+               .build();
+        ValidatableResponse loginResponse = courierClient.login(courierCredentials);
         int statusCode = loginResponse.extract().statusCode();
         String message = loginResponse.extract().path("message");
 
@@ -54,9 +64,13 @@ public class LoginCourierTest {
     }
 
     @Test
-    @DisplayName("Courier cannot login without login")
+    @DisplayName("Courier cannot login with empty login")
     public void courierCannotLoginWithoutLogin() {
-        ValidatableResponse loginResponse = courierClient.login(new CourierCredentials("", courier.getPassword()));
+        CourierCredentials courierCredentials= CourierCredentials.builder()
+                .login("")
+                .password(courier.getPassword())
+                .build();
+        ValidatableResponse loginResponse = courierClient.login(courierCredentials);
         int statusCode = loginResponse.extract().statusCode();
         String message = loginResponse.extract().path("message");
 
@@ -67,7 +81,11 @@ public class LoginCourierTest {
     @Test
     @DisplayName("Courier cannot login with incorrect login")
     public void courierCannotLoginWithIncorrectLogin() {
-        ValidatableResponse loginResponse = courierClient.login(new CourierCredentials("test", courier.getPassword()));
+        CourierCredentials courierCredentials= CourierCredentials.builder()
+                .login("test")
+                .password(courier.getPassword())
+                .build();
+        ValidatableResponse loginResponse = courierClient.login(courierCredentials);
         int statusCode = loginResponse.extract().statusCode();
         String message = loginResponse.extract().path("message");
 
@@ -78,7 +96,11 @@ public class LoginCourierTest {
     @Test
     @DisplayName("Courier cannot login with incorrect password")
     public void courierCannotLoginWithIncorrectPassword() {
-        ValidatableResponse loginResponse = courierClient.login(new CourierCredentials(courier.getLogin(), "test"));
+        CourierCredentials courierCredentials= CourierCredentials.builder()
+                .login(courier.getLogin())
+                .password("test")
+                .build();
+        ValidatableResponse loginResponse = courierClient.login(courierCredentials);
         int statusCode = loginResponse.extract().statusCode();
         String message = loginResponse.extract().path("message");
 
@@ -89,11 +111,58 @@ public class LoginCourierTest {
     @Test
     @DisplayName("Courier cannot login if hasn't created")
     public void courierCannotLoginIfNotCreated() {
-        ValidatableResponse loginResponse = courierClient.login(new CourierCredentials("test", "test"));
+        CourierCredentials courierCredentials= CourierCredentials.builder()
+                .login("test")
+                .password("test")
+                .build();
+        ValidatableResponse loginResponse = courierClient.login(courierCredentials);
         int statusCode = loginResponse.extract().statusCode();
         String message = loginResponse.extract().path("message");
 
         assertThat("Courier cannot login", statusCode, equalTo(404));
         assertThat("Message if cannot login", message, equalTo("Учетная запись не найдена"));
+    }
+
+    @Test
+    @DisplayName("Login field is required")
+    @Description("The courier cannot log in if the login field is missing in the request")
+    public void courierCannotLoginIfLoginFieldMissing() {
+        CourierCredentials courierCredentials= CourierCredentials.builder()
+                .password(courier.getPassword())
+                .build();
+        ValidatableResponse loginResponse = courierClient.login(courierCredentials);
+        int statusCode = loginResponse.extract().statusCode();
+
+        assertThat("Courier cannot login", statusCode, equalTo(400));
+
+        String message = loginResponse.extract().path("message");
+
+        assertThat("Message if cannot login", message, equalTo("Недостаточно данных для входа"));
+    }
+    @Test
+    @DisplayName("Password field is required")
+    @Description("The courier cannot log in if the password field is missing in the request")
+    public void courierCannotLoginIfPasswordFieldMissing() {
+        CourierCredentials courierCredentials= CourierCredentials.builder()
+                .login(courier.getLogin())
+                .build();
+        ValidatableResponse loginResponse = courierClient.login(courierCredentials);
+        int statusCode = loginResponse.extract().statusCode();
+        assertThat("Courier cannot login", statusCode, equalTo(400));
+        String message = loginResponse.extract().path("message");
+        assertThat("Message if cannot login", message, equalTo("Недостаточно данных для входа"));
+    }
+
+    @Test
+    @DisplayName("Request body is required")
+    @Description("The courier cannot log in if the request body is missing")
+    public void courierCannotLoginIfRequestBodyMissing() {
+        CourierCredentials courierCredentials= CourierCredentials.builder()
+                .build();
+        ValidatableResponse loginResponse = courierClient.login(courierCredentials);
+        int statusCode = loginResponse.extract().statusCode();
+        assertThat("Courier cannot login", statusCode, equalTo(400));
+        String message = loginResponse.extract().path("message");
+        assertThat("Message if cannot login", message, equalTo("Недостаточно данных для входа"));
     }
 }

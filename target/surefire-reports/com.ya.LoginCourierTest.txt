@@ -1,4 +1,18 @@
 -------------------------------------------------------------------------------
 Test set: com.ya.LoginCourierTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.639 s - in com.ya.LoginCourierTest
+Tests run: 9, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 126.532 s <<< FAILURE! - in com.ya.LoginCourierTest
+courierCannotLoginIfPasswordFieldMissing(com.ya.LoginCourierTest)  Time elapsed: 60.523 s  <<< FAILURE!
+java.lang.AssertionError: 
+Courier cannot login
+Expected: <400>
+     but: was <504>
+	at com.ya.LoginCourierTest.courierCannotLoginIfPasswordFieldMissing(LoginCourierTest.java:151)
+
+courierCannotLoginIfRequestBodyMissing(com.ya.LoginCourierTest)  Time elapsed: 60.7 s  <<< FAILURE!
+java.lang.AssertionError: 
+Courier cannot login
+Expected: <400>
+     but: was <504>
+	at com.ya.LoginCourierTest.courierCannotLoginIfRequestBodyMissing(LoginCourierTest.java:164)
+

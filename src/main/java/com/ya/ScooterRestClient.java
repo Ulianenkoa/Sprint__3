@@ -11,6 +11,7 @@ public class ScooterRestClient {
 
     protected static RequestSpecification getBaseSpec() {
         return new RequestSpecBuilder()
+                .addFilter(new AllureRestAssured())
                 .setContentType(JSON)
                 .setBaseUri(BASE_URL)
                 .build();

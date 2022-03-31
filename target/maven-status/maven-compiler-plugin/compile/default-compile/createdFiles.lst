@@ -1,7 +1,9 @@
 com/ya/CourierGenerator.class
 com/ya/Courier.class
 com/ya/CourierClient.class
+com/ya/Order$OrderBuilder.class
 com/ya/ScooterRestClient.class
 com/ya/CourierCredentials.class
 com/ya/OrderClient.class
 com/ya/Order.class
+com/ya/CourierCredentials$CourierCredentialsBuilder.class

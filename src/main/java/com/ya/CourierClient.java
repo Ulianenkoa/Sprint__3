@@ -1,5 +1,7 @@
 package com.ya;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
@@ -9,14 +11,14 @@ public class CourierClient extends ScooterRestClient{
     private static final String COURIER_PATH = "/api/v1/courier";
 
     @Step("Courier create")
-    public ValidatableResponse create (Courier courier){
-        String courierLogin = courier.getLogin();
-        String courierPassword = courier.getPassword();
-        String courierFirstName = courier.getFirstName();
+    public ValidatableResponse create (Courier courier) {
+        String registerRequestBody = null;
 
-        String registerRequestBody = "{\"login\":\"" + courierLogin + "\","
-                + "\"password\":\"" + courierPassword + "\","
-                + "\"firstName\":\"" + courierFirstName + "\"}";
+        try {
+            registerRequestBody = new ObjectMapper().writeValueAsString(courier);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         return given()
                 .spec(getBaseSpec())
