@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: com.ya.CreateCourierTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 2.738 s <<< FAILURE! - in com.ya.CreateCourierTest
+courierMustBeUnique(com.ya.CreateCourierTest)  Time elapsed: 0.518 s  <<< FAILURE!
+java.lang.AssertionError: 
+Message if cannot create
+Expected: "Этот логин уже используется"
+     but: was "Этот логин уже используется. Попробуйте другой."
+	at com.ya.CreateCourierTest.courierMustBeUnique(CreateCourierTest.java:49)
+

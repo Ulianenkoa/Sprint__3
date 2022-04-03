@@ -1,0 +1,47 @@
+<div>POST to https://qa-scooter.praktikum-services.ru/api/v1/orders</div>
+
+<h4>Body</h4>
+<div>
+    <pre class="preformated-text">
+    {
+    &quot;firstName&quot;: &quot;Тамара&quot;,
+    &quot;lastName&quot;: &quot;Борисов&quot;,
+    &quot;address&quot;: &quot;пр. Центральная, 568&quot;,
+    &quot;metroStation&quot;: &quot;0&quot;,
+    &quot;phone&quot;: &quot;+7(999)590-18-89&quot;,
+    &quot;rentTime&quot;: 1,
+    &quot;deliveryDate&quot;: &quot;2022-03-31&quot;,
+    &quot;comment&quot;: &quot;Senior Integration Agent&quot;,
+    &quot;color&quot;: [
+        &quot;Black&quot;,
+        &quot;Grey&quot;
+    ]
+}
+    </pre>
+</div>
+
+<h4>Headers</h4>
+<div>
+        <div>Accept: */*</div>
+        <div>Content-Type: application/json</div>
+</div>
+
+
+
+<h4>Curl</h4>
+<div>
+curl -v -X POST &#39;https://qa-scooter.praktikum-services.ru/api/v1/orders&#39; -H &#39;Accept: */*&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;firstName&quot;: &quot;Тамара&quot;,
+    &quot;lastName&quot;: &quot;Борисов&quot;,
+    &quot;address&quot;: &quot;пр. Центральная, 568&quot;,
+    &quot;metroStation&quot;: &quot;0&quot;,
+    &quot;phone&quot;: &quot;+7(999)590-18-89&quot;,
+    &quot;rentTime&quot;: 1,
+    &quot;deliveryDate&quot;: &quot;2022-03-31&quot;,
+    &quot;comment&quot;: &quot;Senior Integration Agent&quot;,
+    &quot;color&quot;: [
+        &quot;Black&quot;,
+        &quot;Grey&quot;
+    ]
+}&#39;
+</div>
